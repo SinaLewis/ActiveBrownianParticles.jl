@@ -1,10 +1,17 @@
-using Random
-
 module ActiveBrownianParticles
+
+#using Debugger
+using Random, Plots
+
+gr()
+
+include("integration.jl")
+include("equationOfMotion.jl")
+include("updatePositions.jl")
+
 # Define simulation params
 N = 1000    # number of particles
 boxSize = 25    # size of box
-T = 3.0     # temperature
 
 # Define random number generator
 rng = MersenneTwister()
@@ -12,19 +19,8 @@ rng = MersenneTwister()
 # Define starting points
 # Randomly place in box
 posDist = rand(rng, Float64, (N, 2)) .* boxSize
+plot(posDist[:, 1], posDist[:, 2], seriestype=:scatter) # need display to show plot while debugging
 
-# Define starting velocity
-# Draw from normal distribution
-velDist = randn(rng, Float64, (N, 2))
-
-# determine scaling factor for temperature
-KE = sum(velDist[:, 1] .^ 2 + velDist[:, 2] .^ 2)
-λ = sqrt(N * T / KE)
-# normalize velocity distriution to the temperature
-velDist = λ .* velDist
-
-######################
-
-
+updatePositions(10, 0.1, posDist, EOM)
 
 end
