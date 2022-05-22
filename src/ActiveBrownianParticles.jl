@@ -21,6 +21,6 @@ rng = MersenneTwister()
 posDist = rand(rng, Float64, (N, 2)) .* boxSize
 plot(posDist[:, 1], posDist[:, 2], seriestype=:scatter) # need display to show plot while debugging
 
-updatePositions(10, 0.1, posDist, EOM)
+updatePositions(10, 0.1, posDist, EOM, RK4step)
 
 end
